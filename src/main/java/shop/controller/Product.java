@@ -62,6 +62,15 @@ public class Product extends AbstractController {
 					
 				}
 				
+				// 재고량 가져오기
+				String pStock = pdao.getpStock(pindex);
+				request.setAttribute("pStock", pStock);
+				
+				// 좋아요 수 가져오기
+				String count = pdao.getLike(pindex);
+				System.out.println("count" + count);
+				request.setAttribute("count", count);
+				
 				String pdImgName = pdao.getProductDetailImg(pindex);
 				
 				if (pdImgName != "") {

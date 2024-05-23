@@ -970,4 +970,65 @@ public class ProductDAO_imple implements ProductDAO {
 	} // end of public List<ReviewDTO> selectProductReviewList(String userid) throws SQLException -------------
 	
 
+	
+	// 재고량 가져오기
+	@Override
+	public String getpStock(int pindex) throws SQLException {
+		String pStock = "";
+		
+		try {
+
+			conn = ds.getConnection();
+
+			String sql = " select pStock "
+					   + " from Product "
+					   + " where pIndex = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, pindex);
+
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			pStock = rs.getString("pStock");
+
+		} finally {
+			close();
+		}	
+		
+		return pStock;
+	} // end of public String getpStock(int pindex) throws SQLException ------
+
+	// 좋아요 수 가져오기
+	@Override
+	public String getLike(int pindex) throws SQLException {
+		String count = "";
+		
+		try {
+
+			conn = ds.getConnection();
+
+			String sql = " select count(*) AS count "
+					   + " from Likeit "
+					   + " where pIndex = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, pindex);
+
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			count = rs.getString("count");
+
+		} finally {
+			close();
+		}	
+		
+		return count;
+	} // end of public String getLike(int pindex) throws SQLException --------
+	
 }

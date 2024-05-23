@@ -48,4 +48,10 @@ public interface ProductDAO {
 	// [리뷰 관리] 회원이 주문한 상품 중 배송완료인 상품 목록 띄우기
 	List<ReviewDTO> selectProductReviewList(String userid) throws SQLException;
 	
+	// 재고량 가져오기
+	String getpStock(int pindex) throws SQLException;
+
+	// 좋아요 수 가져오기
+	String getLike(int pindex) throws SQLException;
+	
 }

@@ -95,16 +95,26 @@ $(function (){
 	            </div>
 	
 	            <form name="cartin">
-		            <div class="input-group fs-5 mb-5">
+		            <div class="input-group fs-5 mb-1">
 		                <div class="input-group-prepend">
 		                    <input type="hidden" id="stockquantity" name="stockquantity">
-		                    <span class="input-group-text">주문 수량</span>
+		                    <span class="input-group-text mr-3">주문 수량</span> 
 		                </div>
 		                	<input class="form-control text-center me-3" id="count" name="cvolume" type="number" value="1" start="1" min="0" max="100" style="max-width: 5rem" />
 		                	<input name="userid" value = "${sessionScope.loginUser.userid}" style="display: none;"/>
 		                	<input name="pindex" value = "${requestScope.pdto.pindex}" style="display: none;"/>
+		                	<input name="pStock" value = "${requestScope.pStock}" style="display: none;"/>
 		                	<input name="url" value = "<%= url%>" style="display:none;"/>
 		            </div>
+                    <c:if test="${requestScope.pStock == '0'}">
+                    	<span class="input-group-text mr-3" style="max-width: 5rem;">재고없음</span>
+                    </c:if>
+                    <c:if test="${requestScope.pStock != '0'}">
+	                    <div class="input-group fs-5 mb-1">
+                    		<span class="input-group-text mr-3">재고량</span>
+                    		<span class="input-group-text mr-3" style="max-width: 5rem; background-color: white;">${requestScope.pStock}</span>  
+	                    </div> 
+                    </c:if>
 	            </form>
 	
 	            <br>
@@ -121,6 +131,9 @@ $(function (){
 		                      <img src="../images/heart.png" style="width: 3rem;"/>
 		                    </button>
 	                    </c:if>
+
+	                    	<span>좋아요 : ${requestScope.count}</span>
+	                    
 	                    <button class="btn btn-outline-dark flex-shrink-0 fw-semibold pt-3 px-4 py-3" type="button">
 	                        BUY IT NOW
 	                    </button>
