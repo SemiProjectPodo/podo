@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import member.domain.MemberDTO;
+import member.domain.PointDTO;
 
 public interface MemberDAO {
 
@@ -55,6 +56,12 @@ public interface MemberDAO {
 
    // 적립금 정보 
    Map<String, String> getMyPointInfo(String userid) throws SQLException;
+
+   // 회원 정보 및 포인트 정보 가져오기
+   Map<String, String> getMemberWithPointInfo(String userid) throws SQLException;
+
+   // 회원 정보 및 포인트 정보 가져오기
+   List<PointDTO> selectMemberPoint(String userid) throws SQLException;
 
    
 

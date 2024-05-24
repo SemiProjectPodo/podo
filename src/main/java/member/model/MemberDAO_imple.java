@@ -16,6 +16,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import member.domain.MemberDTO;
+import member.domain.PointDTO;
 import util.security.AES256;
 import util.security.SecretMykey;
 import util.security.Sha256;
@@ -648,6 +649,96 @@ public class MemberDAO_imple implements MemberDAO {
    }
 
 
+   // 포인트 정보와 회원 정보 가져오기
+   @Override
+   public Map<String, String> getMemberWithPointInfo(String userid) throws SQLException {
+      Map<String, String> memberPointInfo = new HashMap<>();
+      try {
+         conn = ds.getConnection();
+         String sql = " SELECT M.USERID, M.NAME, M.POINT, P.POINCOME, P.PODATE " 
+			        + " FROM MEMBER M LEFT JOIN POINT P ON M.USERID = P.USERID " 
+			        + " WHERE M.USERID = ? ";
+         
+         pstmt = conn.prepareStatement(sql);
+         pstmt.setString(1, userid);
+         rs = pstmt.executeQuery();
+         
+         if(rs.next()) {
+            memberPointInfo.put("userid", rs.getString("USERID"));
+            memberPointInfo.put("name", rs.getString("NAME"));
+            memberPointInfo.put("point", rs.getString("POINT"));
+            memberPointInfo.put("poincome", rs.getString("POINCOME"));
+            memberPointInfo.put("podate", rs.getString("PODATE"));
+         }
+         
+      } finally {
+         close();
+      }
+      return memberPointInfo;
+   }
+
+
+   // 회원 정보 및 포인트 정보 가져오기
+	@Override
+	public List<PointDTO> selectMemberPoint(String userid) throws SQLException {
+	
+		// 장바구니에 담지 않은 경우도 있기 때문에.(주문했을 경우에는 비워지고)
+		List<PointDTO> pointList = null;
+
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select M.name, M.point, P.poincome, P.podetail, P.podate "
+					   + " From "
+					   + " ( "
+					   + "    select userid, poincome, podetail, podate "
+					   + "    from point "
+					   + "    where userid = ? "
+					   + " ) P "
+					   + " JOIN member M "
+					   + " ON P.userid = M.userid "
+					   + " ORDER BY P.podate desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, userid);
+	         
+	        rs = pstmt.executeQuery();
+	        
+	        // 한번만 cartList = new ArrayList<>(); 만들기 위해;
+	        int cnt = 0;
+	        while(rs.next()) {
+	        	cnt++;
+	        	if(cnt == 1) {
+	        		pointList = new ArrayList<>();
+	        	}
+	                String poincome = rs.getString("poincome");
+	                String podetail = rs.getString("podetail");
+	                String podate = rs.getString("podate");
+	                
+	                MemberDTO member = new MemberDTO();
+	                member.setName(rs.getString("name"));
+	                member.setPoint(rs.getString("point"));
+	                
+	                
+	                PointDTO point = new PointDTO();
+	                point.setPoincome(poincome);
+	                point.setPodetail(podetail);
+	                point.setPodate(podate);
+	                point.setMember(member);
+	                
+	                pointList.add(point);
+	        	
+	        } // end of while(rs.next()) ------------------
+			
+		} finally {
+			close();
+		}
+
+		return pointList;
+	} // end of public List<PointDTO> selectMemberPoint(String userid) --------
+
+	
+	
 
    
    

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
    String ctxPath = request.getContextPath();
@@ -17,6 +19,15 @@
 
 
 </style>
+
+    <c:if test="${not empty memberPointInfo}">
+        <p>회원 아이디: ${memberPointInfo.userid}</p>
+        <p>회원 이름: ${memberPointInfo.name}</p>
+        <p>총 포인트: ${memberPointInfo.point}</p>
+        <p>적립된 포인트: ${memberPointInfo.poincome}</p>
+        <p>포인트 변동 일자: ${memberPointInfo.podate}</p>
+    </c:if>
+
 
 <div class="container" style="padding: 3% 0;">
    <h2 style="font-weight:bold; margin-bottom:2%; text-align:center;"><img src="<%=ctxPath%>/images/point.png" style="width:40px; vertical-align: text-top;">&nbsp;마이페이지</h2>
@@ -36,9 +47,9 @@
          <th>소멸예정 적립금</th>
        </tr>
        <tr class="table-group-divider">
-         <td>0</td>
-         <td>0</td>
-         <td>${requestScope.point}</td>
+         <td>${requestScope.pointcome}</td>
+         <td>${requestScope.memberPointInfo.point-requestScope.pointcome}</td>
+         <td>${requestScope.memberPointInfo.point}</td>
          <td>0</td>
        </tr>
      </tbody>
@@ -74,16 +85,15 @@
                      <th>적립 내용</th>
                      <th>포인트</th>
                  </tr>
-                 <tr>
-                     <td>2024-05-20</td>
-                     <td>관리자 적립 또는 와인구매내역</td>
-                     <td>125 point</td>
-                </tr>
-                <tr>
-                     <td>2024-04-20</td>
-                     <td>와인구매내역</td>
-                     <td>15 point</td>
-                </tr>
+	  			 <c:if test="${not empty requestScope.pointList}">
+		         	 <c:forEach var="pointdto" items="${requestScope.pointList}" varStatus="status">
+		                 <tr>
+		                     <td>${pointdto.podate}</td>
+		                     <td>${pointdto.podetail}</td>
+		                     <td>${pointdto.poincome} point</td>
+		                </tr>
+					 </c:forEach>
+				 </c:if>
             </tbody>
          </table>
       </div>

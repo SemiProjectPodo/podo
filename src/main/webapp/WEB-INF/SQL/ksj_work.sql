@@ -148,3 +148,28 @@ nocache;
 commit;
 --커밋 완료.
 
+select *
+from member
+
+desc point;
+
+select P.userid, M.name, M.point, P.poincome, P.podetail, P.podate
+From
+(
+    select userid, poincome, podetail, podate
+    from point
+    where userid = 'redtree2379'
+) P
+JOIN member M
+ON P.userid = M.userid
+ORDER BY P.podate desc;
+
+to_char(add_months(sysdate, -2), 'yyyy-mm-dd hh24:mi:ss') as '3MonthsAgo'
+
+    insert into point(userid, poincome, podetail, podate) 
+    values('ksj1024sj', '-4300', '2024-05-24 01:24:560상품구입', to_char(sysdate, 'yyyy-mm-dd hh:mm:ss'));
+    
+    select *
+    from point
+    
+    commit;
