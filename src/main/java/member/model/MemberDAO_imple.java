@@ -682,7 +682,7 @@ public class MemberDAO_imple implements MemberDAO {
 	@Override
 	public List<PointDTO> selectMemberPoint(String userid) throws SQLException {
 	
-		// 장바구니에 담지 않은 경우도 있기 때문에.(주문했을 경우에는 비워지고)
+		// 포인트를 얻은 적 없을 수도 있기 때문에
 		List<PointDTO> pointList = null;
 
 		try {
@@ -736,6 +736,76 @@ public class MemberDAO_imple implements MemberDAO {
 
 		return pointList;
 	} // end of public List<PointDTO> selectMemberPoint(String userid) --------
+
+
+	// 만약 시간이 유효기간이 지난 포인트가 있을 경우 poStatus 값을 0 으로 변경시킨다.
+	@Override
+	public void updateMemberPointTimeOver(String userid) throws SQLException {
+		
+		// 포인트 얻은지 3개월이 지나면 포인트 소멸
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " UPDATE point SET postatus = '0' "
+	        		   + " WHERE poStatus = 1 and userid = ?"
+	        		   + " 	  and to_char(to_date(PODATE, 'YYYY-MM-DD HH24:MI:SS') + to_yminterval('00-03') + to_dsinterval('003 00:00:00')  , 'yyyy-mm-dd hh24:mi:ss') <= to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') ";
+	        	
+	        	pstmt = conn.prepareStatement(sql);
+	        	pstmt.setString(1, userid);
+	        	
+	        	int n = pstmt.executeUpdate();
+	        	
+	        	if(n == 1) {
+	        		System.out.println("뭔가 됌");
+	        	}
+	        
+		} finally {
+			close();
+		}
+	} // end of public void updateMemberPointTimeOver(String userid) throws SQLException ----
+
+
+	// 소멸예정 적립금(한달남음) 가져오기
+	@Override
+	public List<PointDTO> getDeleteSoonPointList(String userid) throws SQLException {
+		List<PointDTO> deleteSoonPointList = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select POINCOME "
+					   + " from point "
+					   + " where poStatus = 1 and userid = ? "
+					   + "       and to_char(to_date(PODATE, 'YYYY-MM-DD HH24:MI:SS') + to_yminterval('00-02') + to_dsinterval('000 00:00:00')  , 'yyyy-mm-dd hh24:mi:ss') <= to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') ";
+			
+			pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, userid);
+	         
+	        rs = pstmt.executeQuery();
+	        
+	        // 한번만 cartList = new ArrayList<>(); 만들기 위해;
+	        int cnt = 0;
+	        while(rs.next()) {
+	        	cnt++;
+	        	if(cnt == 1) {
+	        		deleteSoonPointList = new ArrayList<>();
+	        	}
+	                String poincome = rs.getString("POINCOME");
+	                
+	                PointDTO point = new PointDTO();
+	                point.setPoincome(poincome);
+
+	                
+	                deleteSoonPointList.add(point);
+	        	
+	        } // end of while(rs.next()) ------------------
+			
+		} finally {
+			close();
+		}
+
+		return deleteSoonPointList;	
+	} // end of public List<PointDTO> getDeleteSoonPointList(String userid) ------
 
 	
 	

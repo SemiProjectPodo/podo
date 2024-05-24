@@ -1,5 +1,8 @@
 package member.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,22 +56,35 @@ public class MypageShopPoint extends AbstractController {
 			 * request.setAttribute("name", name); request.setAttribute("point", point);
 			 * request.setAttribute("birthday", birthday);
 			 */
+			
+			
+			// 만약 시간이 유효기간이 지난 포인트가 있을 경우 poStatus 값을 0 으로 변경시킨다.
+			mdao.updateMemberPointTimeOver(userid);
 
 			// 회원 정보 및 포인트 정보 가져오기
 			List<PointDTO> pointList = mdao.selectMemberPoint(userid);
 			
 			Map<String, String> memberPointInfo = mdao.getMemberWithPointInfo(userid);
 
+			// 소멸예정 적립금 가져오기(한달 후 소멸되는 포인트)
+			List<PointDTO> deleteSoonPointList = mdao.getDeleteSoonPointList(userid);
+			
+			int deleteSoonPoint = 0;
+			for(PointDTO deleteSoonPointDTO : deleteSoonPointList) {
+				deleteSoonPoint += Integer.parseInt(deleteSoonPointDTO.getPoincome());
+			}
+			
 			int pointcome = 0;
 			for(PointDTO point : pointList) {
-				pointcome += Integer.parseInt(point.getPoincome());
-				point.getPodate();
+				pointcome += Integer.parseInt(point.getPoincome());			
 			}
+			
 			
 			// 필요한 정보 세팅
 			request.setAttribute("memberPointInfo", memberPointInfo);
 			request.setAttribute("pointList", pointList);
 			request.setAttribute("pointcome", pointcome);
+			request.setAttribute("deleteSoonPoint", deleteSoonPoint);
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/member/mypageShopPoint.jsp");

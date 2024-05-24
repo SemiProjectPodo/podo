@@ -169,7 +169,57 @@ to_char(add_months(sysdate, -2), 'yyyy-mm-dd hh24:mi:ss') as '3MonthsAgo'
     insert into point(userid, poincome, podetail, podate) 
     values('ksj1024sj', '-4300', '2024-05-24 01:24:560상품구입', to_char(sysdate, 'yyyy-mm-dd hh:mm:ss'));
     
+    insert into point(userid, poincome, podetail, podate) 
+    values('ksj1024sj', '4300', '2024-05-24 01:24:560상품구입', '2024-02-27 10:30:22');
+    
+    delete from point 
+    where poincome = '-4300'
+    
     select *
     from point
     
     commit;
+    
+    select *
+    from point
+    where userid = 'ksj1024sj'
+    
+    
+alter table point
+add poStatus NVARCHAR2(1) default '1' not null;
+
+commit
+
+
+update point set poStatus;
+where userid = 'ksj1024sj'
+
+
+
+select to_char(to_date(PODATE, 'YYYY-MM-DD HH24:MI:SS') + to_yminterval('00-03') + to_dsinterval('000 00:00:00'))
+from point
+where poStatus = 1 and userid = 'ksj1024sj' 
+      and  to_char(to_date(PODATE, 'YYYY-MM-DD HH24:MI:SS') + to_yminterval('00-03')  + to_dsinterval('000 00:00:00') ) >= to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') 
+
+
+select to_char(sysdate + to_yminterval('00-03')  + to_dsinterval('000 00:00:00') )
+from dual
+
+select *
+from point
+where poStatus = 1 and userid = 'ksj1024sj' 
+      and to_char(to_date(PODATE, 'YYYY-MM-DD HH24:MI:SS') + to_yminterval('00-03') + to_dsinterval('003 00:00:00')  , 'yyyy-mm-dd hh24:mi:ss') <= to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') 
+
+UPDATE point
+   SET postatus = '0'
+ WHERE poStatus = 1 and userid = 'ksj1024sj' 
+      and to_char(to_date(PODATE, 'YYYY-MM-DD HH24:MI:SS') + to_yminterval('00-03') + to_dsinterval('003 00:00:00')  , 'yyyy-mm-dd hh24:mi:ss') <= to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') 
+
+select *
+from point
+
+
+select POINCOME
+from point
+where poStatus = 1 and userid = 'ksj1024sj' 
+      and to_char(to_date(PODATE, 'YYYY-MM-DD HH24:MI:SS') + to_yminterval('00-02') + to_dsinterval('000 00:00:00')  , 'yyyy-mm-dd hh24:mi:ss') <= to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS') 

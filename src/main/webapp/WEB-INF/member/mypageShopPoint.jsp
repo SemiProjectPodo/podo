@@ -20,6 +20,28 @@
 
 </style>
 
+<script type="text/javascript">
+
+$(function() {
+
+	$("button#findDate").on('click', function() {
+		
+		const day1 = document.getElementById('day1').value;
+		const day2 = document.getElementById('day2').value;
+		
+		colsole.log("day1" + day1);
+		alert("day2" + day2);
+		
+		const frm = document.findDateFrm;
+//		frm.method = "get";
+		frm.action = "<%=ctxPath%>/member/mypageShopPoint.wine";
+		frm.submit();
+		
+	});	
+
+});
+</script>
+
     <c:if test="${not empty memberPointInfo}">
         <p>회원 아이디: ${memberPointInfo.userid}</p>
         <p>회원 이름: ${memberPointInfo.name}</p>
@@ -36,7 +58,7 @@
    <table class="table" style="width:50;">
      <thead>
        <tr>
-         <th scope="col" style="font-size:16pt"><span style="font-weight:bold; font-size:20pt; color:#ff6666;"><img src="<%=ctxPath%>/images/mypageP.png" style="width:35px; vertical-align: text-top;">&nbsp;${requestScope.name}</span>님</th>
+         <th scope="col" style="font-size:16pt"><span style="font-weight:bold; font-size:20pt; color:#ff6666;"><img src="<%=ctxPath%>/images/mypageP.png" style="width:35px; vertical-align: text-top;">&nbsp;${memberPointInfo.name}</span>님</th>
        </tr>
      </thead>
      <tbody class="table-group-divider" style="text-align:center;">
@@ -50,14 +72,16 @@
          <td>${requestScope.pointcome}</td>
          <td>${requestScope.memberPointInfo.point-requestScope.pointcome}</td>
          <td>${requestScope.memberPointInfo.point}</td>
-         <td>0</td>
+         <td>${requestScope.deleteSoonPoint}</td>
        </tr>
      </tbody>
    </table>
    
    <div style="margin-top:4%;">
-      <input type="date" style="width:20%; height:50px; margin-left:52%;"> ~ <input type="date" style="width:20%; height:50px;">&nbsp;&nbsp;
-      <button type="button" class="btn btn-secondary" style="width:5%; height:50px; font-size:13pt; font-weight:bold;">검색</button>
+   	  <form name=fimdDateFrm>
+	      <input type="date" id="day1" style="width:20%; height:50px; margin-left:52%;"> ~ <input type="date" id="day2" style="width:20%; height:50px;">&nbsp;&nbsp;
+	      <button type="button" id = "findDate" class="btn btn-secondary" style="width:5%; height:50px; font-size:13pt; font-weight:bold;">검색</button>
+      </form>
    </div>
    
    <div class="vr" style="border:solid 1px blue; height:20px; margin-top:4%;"></div>

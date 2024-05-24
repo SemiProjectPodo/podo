@@ -189,6 +189,11 @@
 			location.href="<%=ctxPath%>/member/mypageShopPoint.wine";
 		});
 		
+		<%-- 마이페이지 쇼핑정보 포인트 클릭시 --%>
+		$("div#memberPoint2").bind('click',()=>{
+			location.href="<%=ctxPath%>/member/mypageShopPoint.wine";
+		});
+		
 		
 		<%-- 관리자 회원관리 클릭시 --%>
         $("div#adminMember").bind('click',()=>{
@@ -376,8 +381,10 @@
                <div style="cursor: pointer;">
                   <i class="fa-solid fa-circle-dollar-to-slot"></i>
                   <br>
-                  <div style="font-weight: bold; cursor: pointer;">적립금</div>
-                  <div style="color: purple;">${sessionScope.loginUser.point }</div>
+                  <div id ="memberPoint2">
+	                  <div style="font-weight: bold; cursor: pointer;">적립금</div>
+	                  <div style="color: purple;">${sessionScope.loginUser.point }</div>
+                  </div>
                </div>
            </div>
            <hr style="width: 90%; color: purple; border: solid 2px;">  

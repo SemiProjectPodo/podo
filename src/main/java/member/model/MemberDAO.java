@@ -63,6 +63,12 @@ public interface MemberDAO {
    // 회원 정보 및 포인트 정보 가져오기
    List<PointDTO> selectMemberPoint(String userid) throws SQLException;
 
+   // 만약 시간이 유효기간이 지난 포인트가 있을 경우 poStatus 값을 0 으로 변경시킨다.
+   void updateMemberPointTimeOver(String userid) throws SQLException;
+
+   // 소멸예정 적립금 가져오기
+   List<PointDTO> getDeleteSoonPointList(String userid) throws SQLException;
+
    
 
 
