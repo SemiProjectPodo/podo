@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -65,7 +66,8 @@ public class AdminProduct extends AbstractController {
          else { //"POST" 이라면
             
             // 1. 첨부되어진 파일을 디스크의 어느 경로에 업로드 할 것인지 그 경로를 설정해야 한다. 
-                  String uploadFileDir = "C:/NCS/podo/src/main/webapp/images/product";
+        	 	 ServletContext svlCtx = session.getServletContext();
+                  String uploadFileDir = svlCtx.getRealPath("/images");
                   
                 // ==== >>> 파일을 업로드 해준다 <<< ==== //
                 String pimg = null;
