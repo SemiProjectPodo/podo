@@ -278,7 +278,12 @@ insert into point(userid, poincome, podetail, podate) VALUES ('gpwjd1wldms', -50
 commit;
 
 
+------ **** local 한 semi_orauser4 로 연결하기 **** ------
+show user;
+-- USER이(가) "SEMI_ORAUSER4"입니다.
 
+select * from tab;
+----------------------------------------------------------
 
 
 
