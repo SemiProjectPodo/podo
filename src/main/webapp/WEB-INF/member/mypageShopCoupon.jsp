@@ -71,7 +71,7 @@
 <div class="container" style="padding: 3% 0;">
     <h2 style="font-weight:bold; margin-bottom:2%; text-align:center;">
         <img src="<%=ctxPath%>/images/coupon.png" style="width:35px; vertical-align: text-top;">
-        &nbsp;마이페이지
+        &nbsp;쿠폰
     </h2>
     <hr>
 
@@ -104,7 +104,7 @@
 
                 <c:if test="${requestScope.myCouponList != null}">
                     <tr>
-                        <td>${requestScope.totalCoupon}</td>
+                        <td>${requestScope.totalMyCouponCount}</td>
                         <td>${requestScope.usedCoupon}</td>
                         <td>${requestScope.availableCoupons}</td>
                     </tr>

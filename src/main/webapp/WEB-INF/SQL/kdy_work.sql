@@ -318,3 +318,9 @@ where pindex = 146;
 commit;
 */
 
+
+
+select *
+from likeit
+where pindex = 152;
+
